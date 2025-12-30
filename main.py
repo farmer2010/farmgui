@@ -7,12 +7,12 @@ pygame.init()
 screen = pygame.display.set_mode((1920, 1080))
 pygame.display.set_caption("GUI test")
 keep_going = 1
+timer = pygame.time.Clock()
 
 IM = InputManager()
 buttons = []
 buttons.append(Button(pygame.Rect(50, 50, 200, 50), IM, onrelease=lambda: print(1)))
-buttons.append(TextBox(pygame.Rect(50, 150, 200, 50), IM, ))
-
+buttons.append(TextBox(pygame.Rect(50, 150, 200, 50), IM))
 
 while keep_going:
     events = pygame.event.get()
@@ -30,4 +30,5 @@ while keep_going:
         b.draw(screen)
     IM.update(events)
     pygame.display.update()
+    timer.tick(60)
 pygame.quit()
