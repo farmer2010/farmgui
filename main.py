@@ -1,5 +1,6 @@
 from button import *
 from text_box import *
+from slider import *
 from input_manager import *
 import pygame
 pygame.init()
@@ -13,6 +14,7 @@ IM = InputManager()
 buttons = []
 buttons.append(Button(pygame.Rect(50, 50, 200, 50), IM, onrelease=lambda: print(1)))
 buttons.append(TextBox(pygame.Rect(50, 150, 200, 50), IM))
+#buttons.append(Slider(pygame.Rect(50, 150, 200, 50), pygame.Rect(), IM))
 
 while keep_going:
     events = pygame.event.get()

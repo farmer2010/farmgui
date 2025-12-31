@@ -7,8 +7,8 @@ class Button():
         self.input_manager = input_manager
         self.rect = rect
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_button_image(self.rect.w, self.rect.h, 0, (90, 90, 90))
-        self.pressed_image = kwargs.get("pressed_image") if kwargs.get("pressed_image") != None else get_button_image(self.rect.w, self.rect.h, 1, (30, 30, 30))
-        self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_button_image(self.rect.w, self.rect.h, 2, (60, 60, 60))
+        self.pressed_image = kwargs.get("pressed_image") if kwargs.get("pressed_image") != None else get_button_image(self.rect.w, self.rect.h, 1, (50, 50, 50))
+        self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_button_image(self.rect.w, self.rect.h, 2, (120, 120, 120))
         self.image = self.inactive_image
         self.onclick = kwargs.get("onclick")
         self.onclick_params = kwargs.get("onclick_params")
