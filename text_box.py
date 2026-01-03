@@ -4,9 +4,9 @@ import pygame
 pygame.init()
 
 class TextBox():
-    def __init__(self, rect, input_manager, **kwargs):
-        self.rect = rect
-        self.input_manager = input_manager
+    def __init__(self, rect, **kwargs):
+        self.rect = pygame.Rect(rect)
+        self.input_manager = None
         self.text = ""
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_text_box_image(self.rect.w, self.rect.h, (90, 90, 90))
         self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_text_box_image(self.rect.w, self.rect.h, (120, 120, 120))

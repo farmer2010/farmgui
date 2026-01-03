@@ -1,7 +1,4 @@
-from button import *
-from text_box import *
-from slider import *
-from input_manager import *
+from gui import *
 import pygame
 pygame.init()
 
@@ -10,11 +7,10 @@ pygame.display.set_caption("GUI test")
 keep_going = 1
 timer = pygame.time.Clock()
 
-IM = InputManager()
-buttons = []
-buttons.append(Button(pygame.Rect(50, 50, 200, 50), IM, onrelease=lambda: print(1)))
-buttons.append(TextBox(pygame.Rect(50, 150, 200, 50), IM))
-#buttons.append(Slider(pygame.Rect(50, 150, 200, 50), pygame.Rect(), IM))
+buttons = ButtonManager()
+buttons.add(Button((50, 50, 200, 50), onrelease=lambda: print(1)))
+buttons.add(TextBox((50, 150, 200, 50)))
+buttons.add(Slider((50, 250, 200, 40), (25, 25)))
 
 while keep_going:
     events = pygame.event.get()
@@ -26,11 +22,7 @@ while keep_going:
                 keep_going = 0
     #
     screen.fill((255, 255, 255))
-    for b in buttons:
-        b.update(events)
-    for b in buttons:
-        b.draw(screen)
-    IM.update(events)
+    buttons.update(screen, events)
     pygame.display.update()
     timer.tick(60)
 pygame.quit()
