@@ -4,16 +4,22 @@ import pygame
 pygame.init()
 
 class Slider():
-    def __init__(self, rect, c_rect, preset_value=0, min_value=0, max_value=100, **kwargs):
+    def __init__(self, rect, c_rect, preset_value=2, min_value=0, max_value=7, offset=3, value_type="int", **kwargs):
         self.rect = pygame.Rect(rect)
         self.c_rect = c_rect
         self.input_manager = None
         self.value = preset_value
         self.min_value = min_value
         self.max_value = max_value
+        self.offset = offset
+        self.type = value_type
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_slider_image(self.rect.w, self.rect.h, (90, 90, 90))
         self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_slider_image(self.rect.w, self.rect.h, (120, 120, 120))
         self.image = self.inactive_image
+        #
+        self.c_inactive_image = kwargs.get("c_inactive_image") if kwargs.get("c_inactive_image") != None else get_button_image(self.c_rect[0], self.c_rect[1], 0, (60, 60, 60))
+        self.c_hover_image = kwargs.get("c_hover_image") if kwargs.get("c_hover_image") != None else get_button_image(self.c_rect[0], self.c_rect[1], 0, (90, 90, 90))
+        self.c_image = self.c_inactive_image
 
     def update(self, events):
         mousedown = pygame.mouse.get_pressed()[0]
@@ -23,17 +29,33 @@ class Slider():
             if mousedown:
                 if self.input_manager.mousetag_object[0] == None:
                     self.input_manager.mousetag_object[0] = self
+                    self.update_param()
             else:
                 if self.input_manager.mousetag_object[0] == self:
                     self.input_manager.mousetag_object[0] = None
                 self.image = self.hover_image
+                self.c_image = self.c_hover_image
         else:
             if self.input_manager.mousetag_object[0] == self:
-                self.input_manager.mouse_connect_object[0] = self
                 if not mousedown:
                     self.input_manager.mousetag_object[0] = None
             if not mousedown:
                 self.image = self.inactive_image
+                self.c_image = self.c_inactive_image
+        if self.input_manager.mousetag_object[0] == self and mousedown:
+            self.update_param()
+
+    def update_param(self):
+        mousepos = pygame.mouse.get_pos()
+        pos = (mousepos[0] - self.rect.x, mousepos[1] - self.rect.y)
+        if pos[0] >= self.offset + self.c_rect[0] / 2 and pos[0] < self.rect.w - self.offset - self.c_rect[0] / 2:
+            self.value = self.min_value + (pos[0] - self.offset - self.c_rect[0] / 2) / (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.max_value - self.min_value)
+        elif pos[0] < self.offset + self.c_rect[0] / 2:
+            self.value = self.min_value
+        elif pos[0] >= self.rect.w - self.offset * 2 - self.c_rect[0] / 2:
+            self.value = self.max_value
+        if self.type == "int":
+            self.value = round(self.value)
 
     def get_value(self):
         return(self.value)
@@ -43,3 +65,5 @@ class Slider():
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+        x = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
+        screen.blit(self.c_image, (self.rect.x + self.offset + x, (self.rect.y + self.rect.h / 2) - (self.c_rect[1] / 2)))

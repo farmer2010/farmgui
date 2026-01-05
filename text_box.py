@@ -20,7 +20,7 @@ class TextBox():
             self.color = (0, 0, 0)
         self.font = kwargs.get("font")
         if self.font == None:
-            self.font = pygame.font.SysFont("arial", self.size)
+            self.font = pygame.font.SysFont("times new roman", self.size)
         self.text_x = kwargs.get("text_x")
         if self.text_x == None:
             self.text_x = 10
@@ -48,11 +48,11 @@ class TextBox():
                         else:
                             self.onclick()
             else:
+                self.image = self.hover_image
+                if self.mouselast and self.input_manager.mousetag_object[0] == self:
+                    self.input_manager.mouse_connect_object[0] = self
                 if self.input_manager.mousetag_object[0] == self:
                     self.input_manager.mousetag_object[0] = None
-                self.image = self.hover_image
-                if self.mouselast:
-                    self.input_manager.mouse_connect_object[0] = self
             self.mouselast = mousedown
         else:
             if self.input_manager.mousetag_object[0] == self:
