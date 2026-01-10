@@ -10,7 +10,8 @@ timer = pygame.time.Clock()
 buttons = ButtonManager()
 buttons.add(Button((50, 50, 200, 50), onrelease=lambda: print(1)))
 buttons.add(TextBox((50, 150, 200, 50)))
-buttons.add(Slider((50, 250, 200, 40), (34, 34)))
+buttons.add(Slider((50, 250, 200, 50), (44, 44)))
+buttons.add(RadioButton((50, 350, 30, 30)))
 
 while keep_going:
     events = pygame.event.get()

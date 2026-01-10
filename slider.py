@@ -4,7 +4,7 @@ import pygame
 pygame.init()
 
 class Slider():
-    def __init__(self, rect, c_rect, preset_value=2, min_value=0, max_value=7, offset=3, value_type="int", **kwargs):
+    def __init__(self, rect, c_rect, preset_value=0, min_value=0, max_value=100, offset=3, value_type="int", **kwargs):
         self.rect = pygame.Rect(rect)
         self.c_rect = c_rect
         self.input_manager = None
