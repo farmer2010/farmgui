@@ -1,12 +1,12 @@
 from image_factory import *
 from utils import *
+from component import *
 import pygame
 pygame.init()
 
-class TextBox():
+class TextBox(Component):
     def __init__(self, rect, text="", **kwargs):
-        self.rect = pygame.Rect(rect)
-        self.input_manager = None
+        Component.__init__(self, rect)
         self.text = text
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_text_box_image(self.rect.w, self.rect.h, (90, 90, 90))
         self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_text_box_image(self.rect.w, self.rect.h, (120, 120, 120))
@@ -31,17 +31,15 @@ class TextBox():
         self.timer = 0
         self.cursor_pos = 0
 
-    def update(self, events):
+    def update(self, events, mousepos):
         self.timer += 1
         self.timer %= 60
         mousedown = pygame.mouse.get_pressed()[0]
-        mousepos = pygame.mouse.get_pos()
         mouse_collide = (mousepos[0] >= self.rect.x and mousepos[0] <= self.rect.x + self.rect.w) and (mousepos[1] >= self.rect.y and mousepos[1] <= self.rect.y + self.rect.h)
         last_text = self.text
         if mouse_collide:
             if mousedown:
                 if self.input_manager.mousetag_object[0] == None:
-                    self.input_manager.mousetag_object[0] = self
                     if str(type(self.onclick)) == "<class 'function'>":
                         if self.onclick_params != None:
                             self.onclick(*self.onclick_params)
@@ -51,14 +49,10 @@ class TextBox():
                 self.image = self.hover_image
                 if self.mouselast and self.input_manager.mousetag_object[0] == self:
                     self.input_manager.mouse_connect_object[0] = self
-                if self.input_manager.mousetag_object[0] == self:
-                    self.input_manager.mousetag_object[0] = None
             self.mouselast = mousedown
         else:
             if self.input_manager.mousetag_object[0] == self:
                 self.input_manager.mouse_connect_object[0] = self
-                if not mousedown:
-                    self.input_manager.mousetag_object[0] = None
             if not mousedown:
                 self.image = self.inactive_image
             if mousedown and self.input_manager.mouse_connect_object[0] == self:

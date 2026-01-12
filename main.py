@@ -12,6 +12,11 @@ buttons.add(Button((50, 50, 200, 50), onrelease=lambda: print(1)))
 buttons.add(TextBox((50, 150, 200, 50)))
 buttons.add(Slider((50, 250, 200, 50), (44, 44)))
 buttons.add(RadioButton((50, 350, 30, 30)))
+panel = Panel((500, 100, 300, 600))
+panel.add(Button((5, 5, 250, 35)))
+panel.add(Button((5, 45, 250, 35)))
+panel.add(Button((5, 85, 250, 35)))
+buttons.add(panel)
 
 while keep_going:
     events = pygame.event.get()

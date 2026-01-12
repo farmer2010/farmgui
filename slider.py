@@ -1,13 +1,13 @@
 from image_factory import *
+from component import *
 from utils import *
 import pygame
 pygame.init()
 
-class Slider():
+class Slider(Component):
     def __init__(self, rect, c_rect, preset_value=0, min_value=0, max_value=100, offset=3, value_type="int", **kwargs):
-        self.rect = pygame.Rect(rect)
+        Component.__init__(self, rect)
         self.c_rect = c_rect
-        self.input_manager = None
         self.value = preset_value
         self.min_value = min_value
         self.max_value = max_value
@@ -21,24 +21,17 @@ class Slider():
         self.c_hover_image = kwargs.get("c_hover_image") if kwargs.get("c_hover_image") != None else get_button_image(self.c_rect[0], self.c_rect[1], 0, (90, 90, 90))
         self.c_image = self.c_inactive_image
 
-    def update(self, events):
+    def update(self, events, mousepos):
         mousedown = pygame.mouse.get_pressed()[0]
-        mousepos = pygame.mouse.get_pos()
         mouse_collide = (mousepos[0] >= self.rect.x and mousepos[0] <= self.rect.x + self.rect.w) and (mousepos[1] >= self.rect.y and mousepos[1] <= self.rect.y + self.rect.h)
         if mouse_collide:
             if mousedown:
                 if self.input_manager.mousetag_object[0] == None:
-                    self.input_manager.mousetag_object[0] = self
                     self.update_param()
             else:
-                if self.input_manager.mousetag_object[0] == self:
-                    self.input_manager.mousetag_object[0] = None
                 self.image = self.hover_image
                 self.c_image = self.c_hover_image
         else:
-            if self.input_manager.mousetag_object[0] == self:
-                if not mousedown:
-                    self.input_manager.mousetag_object[0] = None
             if not mousedown:
                 self.image = self.inactive_image
                 self.c_image = self.c_inactive_image

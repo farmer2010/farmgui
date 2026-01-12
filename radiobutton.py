@@ -1,11 +1,11 @@
 from image_factory import *
+from component import *
 import pygame
 pygame.init()
 
-class RadioButton():
+class RadioButton(Component):
     def __init__(self, rect, selected=0, offset=3, **kwargs):
-        self.input_manager = None
-        self.rect = pygame.Rect(rect)
+        Component.__init__(self, rect)
         self.offset = offset
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_text_box_image(self.rect.w, self.rect.h, (80, 80, 80), ch=20)
         self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_text_box_image(self.rect.w, self.rect.h, (110, 110, 110), ch=20)
@@ -20,14 +20,12 @@ class RadioButton():
         self.onrelease_params = kwargs.get("onrelease_params")
         self.selected = selected
 
-    def update(self, events):
+    def update(self, events, mousepos):
         mousedown = pygame.mouse.get_pressed()[0]
-        mousepos = pygame.mouse.get_pos()
         mouse_collide = (mousepos[0] >= self.rect.x and mousepos[0] <= self.rect.x + self.rect.w) and (mousepos[1] >= self.rect.y and mousepos[1] <= self.rect.y + self.rect.h)
         if mouse_collide:
             if mousedown:
                 if self.input_manager.mousetag_object[0] == None:
-                    self.input_manager.mousetag_object[0] = self
                     self.selected = not self.selected
                     if str(type(self.onclick)) == "<class 'function'>":
                         if self.onclick_params != None:
@@ -41,13 +39,10 @@ class RadioButton():
                             self.onrelease(*self.onrelease_params)
                         else:
                             self.onrelease()
-                    self.input_manager.mousetag_object[0] = None
                 self.image = self.hover_image
                 self.c_image = self.c_hover_image
         else:
             if not mousedown:
-                if self.input_manager.mousetag_object[0] == self:
-                    self.input_manager.mousetag_object[0] = None
                 self.image = self.inactive_image
                 self.c_image = self.c_inactive_image
 
