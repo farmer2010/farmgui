@@ -4,7 +4,7 @@ import pygame
 pygame.init()
 
 class RadioButton(Component):
-    def __init__(self, rect, selected=0, offset=3, **kwargs):
+    def __init__(self, rect, selected=0, offset=3, group=None, **kwargs):
         Component.__init__(self, rect)
         self.offset = offset
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_text_box_image(self.rect.w, self.rect.h, (80, 80, 80), ch=20)
@@ -19,6 +19,8 @@ class RadioButton(Component):
         self.onrelease = kwargs.get("onrelease")
         self.onrelease_params = kwargs.get("onrelease_params")
         self.selected = selected
+        self.group = group
+        if self.group != None: self.group.add(self)
 
     def update(self, events, mousepos):
         mousedown = pygame.mouse.get_pressed()[0]
@@ -26,7 +28,6 @@ class RadioButton(Component):
         if mouse_collide:
             if mousedown:
                 if self.input_manager.mousetag_object[0] == None:
-                    self.selected = not self.selected
                     if str(type(self.onclick)) == "<class 'function'>":
                         if self.onclick_params != None:
                             self.onclick(*self.onclick_params)
@@ -34,6 +35,12 @@ class RadioButton(Component):
                             self.onclick()
             else:
                 if self.input_manager.mousetag_object[0] == self:
+                    if self.group == None:
+                        self.selected = not self.selected
+                    else:
+                        for b in self.group.get_buttons():
+                            b.set_selected(0)
+                        self.selected = 1
                     if str(type(self.onrelease)) == "<class 'function'>":
                         if self.onrelease_params != None:
                             self.onrelease(*self.onrelease_params)
@@ -51,6 +58,10 @@ class RadioButton(Component):
 
     def set_selected(self, num):
         self.selected = num
+
+    def add_group(self, group):
+        self.group = group
+        group.buttons.append(self)
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)

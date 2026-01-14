@@ -54,9 +54,6 @@ class InputManager():
             if pygame.mouse.get_pressed()[i]:
                 if self.mousetag_object[i] == None:
                     self.mouse[i] = 1
-                    self.mousetag_object[i] = "screen"
-            elif self.mousetag_object[i] == "screen":
-                self.mousetag_object[i] = None
 
     def get_mousewheel(self):
         return(self.mousewheel)
