@@ -5,7 +5,14 @@ import pygame
 pygame.init()
 
 class Slider(Component):
-    def __init__(self, rect, c_rect, preset_value=0, min_value=0, max_value=100, offset=3, value_type="int", font=None, font_name=None, font_size=30, font_color=(0, 0, 0), font_alpha=True, center=(0.5, 0.5, 0.5, 0.5), **kwargs):
+    def __init__(self,
+                 rect,
+                 c_rect,
+                 preset_value=0, min_value=0, max_value=100, value_type="int",
+                 offset=3,
+                 font=None, font_name=None, font_size=30, font_color=(0, 0, 0), font_alpha=True, center=(0.5, 0.5, 0.5, 0.5),
+                 **kwargs
+                 ):
         Component.__init__(self, rect)
         self.c_rect = c_rect
         self.value = preset_value
@@ -60,6 +67,9 @@ class Slider(Component):
         if self.type == "int":
             self.value = round(self.value)
 
+    def set_text(self, text):
+        self.text = text
+
     def add_update_text(self, upd):
         self.update_text = upd
 
@@ -74,4 +84,4 @@ class Slider(Component):
         x = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
         screen.blit(self.c_image, (self.rect.x + self.offset + x, (self.rect.y + self.rect.h / 2) - (self.c_rect[1] / 2)))
         img = self.font.render(self.text, self.font_alpha, self.font_color)
-        screen.blit(img, (self.rect.x + self.rect.w / 2 - img.get_width() / 2, self.rect.y + self.rect.h / 2 - img.get_height() / 2))
+        screen.blit(img, (self.rect.x + self.rect.w * self.center[0] - img.get_width() * self.center[2], self.rect.y + self.rect.h * self.center[1] - img.get_height() * self.center[3]))

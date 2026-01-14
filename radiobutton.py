@@ -4,7 +4,14 @@ import pygame
 pygame.init()
 
 class RadioButton(Component):
-    def __init__(self, rect, selected=0, offset=3, group=None, **kwargs):
+    def __init__(self,
+                 rect,
+                 selected=0,
+                 offset=3,
+                 group=None,
+                 text="", font=None, font_name=None, font_size=30, font_color=(0, 0, 0), font_alpha=True, center=(0.5, 0.5), x_offset=5,
+                 **kwargs
+                 ):
         Component.__init__(self, rect)
         self.offset = offset
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_text_box_image(self.rect.w, self.rect.h, (80, 80, 80), ch=20)
@@ -21,6 +28,15 @@ class RadioButton(Component):
         self.selected = selected
         self.group = group
         if self.group != None: self.group.add(self)
+        #
+        self.text = text
+        if font == None: font = pygame.font.SysFont(font_name, font_size)
+        self.font = font
+        self.font_color = font_color
+        self.font_alpha = font_alpha
+        self.update_text = None
+        self.center = center
+        self.x_offset = x_offset
 
     def update(self, events, mousepos):
         mousedown = pygame.mouse.get_pressed()[0]
@@ -53,6 +69,9 @@ class RadioButton(Component):
                 self.image = self.inactive_image
                 self.c_image = self.c_inactive_image
 
+    def set_text(self, text):
+        self.text = text
+
     def get_selected(self):
         return(bool(self.selected))
 
@@ -67,3 +86,5 @@ class RadioButton(Component):
         screen.blit(self.image, self.rect)
         if self.selected:
             screen.blit(self.c_image, (self.rect.x + self.offset, self.rect.y + self.offset))
+        img = self.font.render(self.text, self.font_alpha, self.font_color)
+        screen.blit(img, (self.rect.x + self.rect.w + self.x_offset, self.rect.y + self.rect.h * self.center[0] - img.get_height() * self.center[1]))
