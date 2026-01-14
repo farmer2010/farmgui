@@ -25,10 +25,14 @@ buttons.add(RadioButton((50, 440, 30, 30), group=group))
 buttons.add(RadioButton((50, 480, 30, 30), group=group))
 buttons.add(RadioButton((50, 520, 30, 30), group=group))
 #
-buttons.add(TextLabel("Hello world!", (0, 0), color=(0, 128, 255)))
+buttons.add(TextLabel("Hello world!", (0, 0), font_color=(0, 128, 255)))
 label = TextLabel("", (0, 30))
 label.add_update_text(lambda: "value: " + str(buttons.get_component(2).get_value()))
 buttons.add(label)
+#
+slider = Slider((275, 250, 200, 50), (44, 44))
+slider.add_update_text(lambda x: "value: " + str(x))
+buttons.add(slider)
 
 
 while keep_going:
