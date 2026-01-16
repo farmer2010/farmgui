@@ -33,6 +33,9 @@ buttons.add(label)
 slider = Slider((275, 250, 200, 50), (44, 44))
 slider.add_update_text(lambda x: "value: " + str(x))
 buttons.add(slider)
+#
+buttons.add(NumberBox((50, 570, 70, 28), preset_value=10, max_value=10, change_value=1))
+buttons.add(NumberBox((150, 570, 70, 28), preset_value=5, max_value=10, change_value=0.1))
 
 
 while keep_going:

@@ -5,6 +5,7 @@ from radiobutton import *
 from panel import *
 from radiobutton_group import *
 from text_label import *
+from number_box import *
 from input_manager import *
 from utils import *
 

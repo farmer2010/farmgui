@@ -28,6 +28,11 @@ class Slider(Component):
         self.c_hover_image = kwargs.get("c_hover_image") if kwargs.get("c_hover_image") != None else get_button_image(self.c_rect[0], self.c_rect[1], 0, (90, 90, 90))
         self.c_image = self.c_inactive_image
         #
+        self.onclick = kwargs.get("onclick")
+        self.onclick_params = kwargs.get("onclick_params")
+        self.onchange = kwargs.get("onchange")
+        self.onchange_params = kwargs.get("onchange_params")
+        #
         self.update_text = None
         self.text = ""
         if font == None: font = pygame.font.SysFont(font_name, font_size)
@@ -36,14 +41,21 @@ class Slider(Component):
         self.font_alpha = font_alpha
         self.update_text = None
         self.center = center
+        self.last_value = self.value
 
     def update(self, events, mousepos):
+        self.last_value = self.value
         mousedown = pygame.mouse.get_pressed()[0]
         mouse_collide = (mousepos[0] >= self.rect.x and mousepos[0] <= self.rect.x + self.rect.w) and (mousepos[1] >= self.rect.y and mousepos[1] <= self.rect.y + self.rect.h)
         if mouse_collide:
             if mousedown:
                 if self.input_manager.mousetag_object[0] == None:
                     self.update_param()
+                    if str(type(self.onclick)) == "<class 'function'>":
+                        if self.onclick_params != None:
+                            self.onclick(*self.onclick_params)
+                        else:
+                            self.onclick()
             else:
                 self.image = self.hover_image
                 self.c_image = self.c_hover_image
@@ -54,6 +66,12 @@ class Slider(Component):
         if self.input_manager.mousetag_object[0] == self and mousedown:
             self.update_param()
         if self.update_text != None: self.text = self.update_text(self.value)
+        if self.last_value != self.value:
+            if str(type(self.onchange)) == "<class 'function'>":
+                if self.onchange_params != None:
+                    self.onchange(*self.onchange_params)
+                else:
+                    self.onchange()
 
     def update_param(self):
         mousepos = pygame.mouse.get_pos()
@@ -66,6 +84,18 @@ class Slider(Component):
             self.value = self.max_value
         if self.type == "int":
             self.value = round(self.value)
+
+    def add_onclick(self, p):
+        self.onclick = p
+
+    def add_onclick_params(self, p):
+        self.onclick_params = p
+
+    def add_onchange(self, p):
+        self.onchange = p
+
+    def add_onchange_params(self, p):
+        self.onchange_params = p
 
     def set_text(self, text):
         self.text = text

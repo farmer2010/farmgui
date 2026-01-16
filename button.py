@@ -18,6 +18,8 @@ class Button(Component):
         self.onclick_params = kwargs.get("onclick_params")
         self.onrelease = kwargs.get("onrelease")
         self.onrelease_params = kwargs.get("onrelease_params")
+        self.onpressed = kwargs.get("onpressed")
+        self.onpressed_params = kwargs.get("onpressed_params")
         #
         self.text = text
         if font == None: font = pygame.font.SysFont(font_name, font_size)
@@ -52,6 +54,31 @@ class Button(Component):
                 self.image = self.pressed_image
             if not mousedown:
                 self.image = self.inactive_image
+        #
+        if self.input_manager.mousetag_object[0] == self:#only onpressed
+            if str(type(self.onpressed)) == "<class 'function'>":
+                if self.onpressed_params != None:
+                    self.onpressed(*self.onpressed_params)
+                else:
+                    self.onpressed()
+
+    def add_onrelease(self, p):
+        self.onrelease = p
+
+    def add_onrelease_params(self, p):
+        self.onrelease_params = p
+
+    def add_onclick(self, p):
+        self.onclick = p
+
+    def add_onclick_params(self, p):
+        self.onclick_params = p
+
+    def add_onpressed(self, p):
+        self.onpressed = p
+
+    def add_onpressed_params(self, p):
+        self.onpressed_params = p
 
     def set_text(self, text):
         self.text = text

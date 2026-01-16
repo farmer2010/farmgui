@@ -28,6 +28,8 @@ class TextBox(Component):
         self.onclick_params = kwargs.get("onclick_params")
         self.onchange = kwargs.get("onchange")
         self.onchange_params = kwargs.get("onchange_params")
+        self.onsubmit = kwargs.get("onsubmit")
+        self.onsubmit_params = kwargs.get("onsubmit_params")
         self.timer = 0
         self.cursor_pos = 0
 
@@ -57,6 +59,11 @@ class TextBox(Component):
                 self.image = self.inactive_image
             if mousedown and self.input_manager.mouse_connect_object[0] == self:
                 self.input_manager.mouse_connect_object[0] = None
+                if str(type(self.onsubmit)) == "<class 'function'>":
+                    if self.onsubmit_params != None:
+                        self.onsubmit(*self.onsubmit_params)
+                    else:
+                        self.onsubmit()
         if self.input_manager.mouse_connect_object[0] == self:
             for event in events:
                 if event.type == pygame.KEYDOWN:
@@ -79,6 +86,24 @@ class TextBox(Component):
                 else:
                     self.onchange()
 
+    def add_onclick(self, p):
+        self.onclick = p
+
+    def add_onclick_params(self, p):
+        self.onclick_params = p
+
+    def add_onchange(self, p):
+        self.onchange = p
+
+    def add_onchange_params(self, p):
+        self.onchange_params = p
+
+    def add_onsubmit(self, p):
+        self.onsubmit = p
+
+    def add_onsubmit_params(self, p):
+        self.onsubmit_params = p
+
     def get_text(self):
         return(self.text)
 
@@ -90,5 +115,5 @@ class TextBox(Component):
         render_text(self.text, (self.rect.x + self.text_x, self.rect.y + self.rect.h / 2), screen, centery="center", font=self.font, color=self.color)
         if self.timer < 30 and self.input_manager.mouse_connect_object[0] == self:
             text_img = self.font.render(self.text[:self.cursor_pos], True, self.color)
-            pygame.draw.rect(screen, self.color, (self.rect.x + self.text_x + text_img.get_width(), self.rect.y + self.rect.h / 2 - text_img.get_height() / 2, 2, text_img.get_height()))
+            pygame.draw.rect(screen, self.color, (self.rect.x + self.text_x + text_img.get_width(), self.rect.y + self.rect.h / 2 - text_img.get_height() * 0.8 / 2, 2, text_img.get_height() * 0.8))
         #render_text(str(self.cursor_pos), (0, 0), screen)

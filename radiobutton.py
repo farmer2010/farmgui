@@ -69,6 +69,18 @@ class RadioButton(Component):
                 self.image = self.inactive_image
                 self.c_image = self.c_inactive_image
 
+    def add_onclick(self, p):
+        self.onclick = p
+
+    def add_onclick_params(self, p):
+        self.onclick_params = p
+
+    def add_onrelease(self, p):
+        self.onrelease = p
+
+    def add_onrelease_params(self, p):
+        self.onrelease_params = p
+
     def set_text(self, text):
         self.text = text
 
