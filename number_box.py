@@ -21,9 +21,9 @@ def down(comp, num, min_value, max_value, self):
 def up_scroll(self):
     timer = self.buttons[1].timer
     self.buttons[1].timer += 1
-    if (timer > 60 and timer <= 160 and (timer - 60) % 10 == 0) or \
-            (timer > 160 and timer <= 260 and (timer - 160) % 7 == 0) or \
-            (timer > 260 and (timer - 260) % 4 == 0):
+    if (timer > 30 and timer <= 130 and (timer - 30) % 10 == 0) or \
+            (timer > 130 and timer <= 230 and (timer - 130) % 7 == 0) or \
+            (timer > 230 and (timer - 230) % 5 == 0):
         try:
             n = min(max(int(self.buttons[0].get_text()) + self.change_value, self.min_value), self.max_value)
         except:
@@ -33,9 +33,9 @@ def up_scroll(self):
 def down_scroll(self):
     timer = self.buttons[2].timer
     self.buttons[2].timer += 1
-    if (timer > 60 and timer <= 160 and (timer - 60) % 10 == 0) or \
-            (timer > 160 and timer <= 260 and (timer - 160) % 7 == 0) or \
-            (timer > 260 and (timer - 260) % 4 == 0):
+    if (timer > 30 and timer <= 130 and (timer - 30) % 10 == 0) or \
+            (timer > 130 and timer <= 230 and (timer - 130) % 7 == 0) or \
+            (timer > 230 and (timer - 230) % 5 == 0):
         try:
             n = min(max(int(self.buttons[0].get_text()) - self.change_value, self.min_value), self.max_value)
         except:
