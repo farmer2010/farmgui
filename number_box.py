@@ -3,7 +3,7 @@ from text_box import *
 from button import *
 
 def up(comp, num, min_value, max_value, self):
-    comp.timer = 0
+    self.buttons[1].timer = 0
     try:
         n = min(max(int(comp.get_text()) + num, min_value), max_value)
     except:
@@ -11,7 +11,7 @@ def up(comp, num, min_value, max_value, self):
     comp.set_text(str(n))
 
 def down(comp, num, min_value, max_value, self):
-    comp.timer = 0
+    self.buttons[2].timer = 0
     try:
         n = min(max(int(comp.get_text()) - num, min_value), max_value)
     except:
@@ -19,8 +19,11 @@ def down(comp, num, min_value, max_value, self):
     comp.set_text(str(n))
 
 def up_scroll(self):
+    timer = self.buttons[1].timer
     self.buttons[1].timer += 1
-    if self.buttons[1].timer > 50 and (self.buttons[1].timer - 50) % 10 == 0:
+    if (timer > 60 and timer <= 160 and (timer - 60) % 10 == 0) or \
+            (timer > 160 and timer <= 260 and (timer - 160) % 7 == 0) or \
+            (timer > 260 and (timer - 260) % 4 == 0):
         try:
             n = min(max(int(self.buttons[0].get_text()) + self.change_value, self.min_value), self.max_value)
         except:
@@ -28,8 +31,11 @@ def up_scroll(self):
         self.buttons[0].set_text(str(n))
 
 def down_scroll(self):
+    timer = self.buttons[2].timer
     self.buttons[2].timer += 1
-    if self.buttons[2].timer > 50 and (self.buttons[2].timer - 50) % 10 == 0:
+    if (timer > 60 and timer <= 160 and (timer - 60) % 10 == 0) or \
+            (timer > 160 and timer <= 260 and (timer - 160) % 7 == 0) or \
+            (timer > 260 and (timer - 260) % 4 == 0):
         try:
             n = min(max(int(self.buttons[0].get_text()) - self.change_value, self.min_value), self.max_value)
         except:
