@@ -7,7 +7,13 @@ pygame.init()
 class Button(Component):
     def __init__(self,
                  rect,
-                 text="", font=None, font_name=None, font_size=30, font_color=(0, 0, 0), font_alpha=True, center=(0.5, 0.5, 0.5, 0.5),
+                 text="",
+                 font=None,
+                 font_name=None,
+                 font_size=30,
+                 font_color=(0, 0, 0),
+                 font_alpha=True,
+                 center=(0.5, 0.5, 0.5, 0.5),
                  **kwargs):
         Component.__init__(self, rect)
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_button_image(self.rect.w, self.rect.h, 0, (90, 90, 90))

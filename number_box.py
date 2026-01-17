@@ -69,7 +69,9 @@ class NumberBox(Panel):
         self.change_value = change_value
         self.period = period
         #
-        self.buttons.append(TextBox((0, 0, self.rect.w - self.rect.h / 2, self.rect.h), text=str(preset_value), size=16, text_x=5, onsubmit=text_to_number, onsubmit_params=[self]))
+        textbox = TextBox((0, 0, self.rect.w - self.rect.h / 2, self.rect.h), text=str(preset_value), font_size=16, text_x=5, onsubmit=text_to_number, onsubmit_params=[self])
+        textbox.add_enabled_symbols(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "-"])
+        self.buttons.append(textbox)
         #
         button1 = Button((self.rect.w - self.rect.h / 2, 0, self.rect.h / 2, self.rect.h / 2))
         button1.timer = 0

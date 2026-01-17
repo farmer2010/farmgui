@@ -5,25 +5,32 @@ import pygame
 pygame.init()
 
 class TextBox(Component):
-    def __init__(self, rect, text="", **kwargs):
+    def __init__(self, rect,
+                 text="",
+                 font=None,
+                 font_name="times new roman",
+                 font_size=30,
+                 font_color=(0, 0, 0),
+                 text_x=10,
+                 enabled_symbols=None,
+                 disabled_symbols=[],
+                 **kwargs
+                 ):
         Component.__init__(self, rect)
         self.text = text
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_text_box_image(self.rect.w, self.rect.h, (90, 90, 90))
         self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_text_box_image(self.rect.w, self.rect.h, (120, 120, 120))
         self.image = self.inactive_image
         self.mouselast = 0
-        self.size = kwargs.get("size")
-        if self.size == None:
-            self.size = 25
-        self.color = kwargs.get("color")
-        if self.color == None:
-            self.color = (0, 0, 0)
-        self.font = kwargs.get("font")
-        if self.font == None:
-            self.font = pygame.font.SysFont("times new roman", self.size)
-        self.text_x = kwargs.get("text_x")
-        if self.text_x == None:
-            self.text_x = 10
+        #
+        self.text_x = text_x
+        if font == None: font = pygame.font.SysFont(font_name, font_size)
+        self.font = font
+        self.font_color = font_color
+        #
+        self.enabled_symbols = enabled_symbols
+        self.disabled_symbols = disabled_symbols
+        #
         self.onclick = kwargs.get("onclick")
         self.onclick_params = kwargs.get("onclick_params")
         self.onchange = kwargs.get("onchange")
@@ -75,16 +82,23 @@ class TextBox(Component):
                         self.text = self.text[:self.cursor_pos - 1] + self.text[self.cursor_pos:]
                         self.cursor_pos -= 1
                     elif event.unicode != "" and event.key != pygame.K_ESCAPE and event.key != pygame.K_TAB and event.key != pygame.K_DELETE and event.key != pygame.K_BACKSPACE and event.key != pygame.K_RETURN and event.key != pygame.K_KP_ENTER:
-                        text_img = self.font.render(self.text + event.unicode, True, self.color)
-                        if text_img.get_width() < self.rect.w - self.text_x * 2:
-                            self.text = self.text[:self.cursor_pos] + event.unicode + self.text[self.cursor_pos:]
-                            self.cursor_pos += 1
+                        if (self.enabled_symbols == None or event.unicode in self.enabled_symbols) and not (event.unicode in self.disabled_symbols):
+                            text_img = self.font.render(self.text + event.unicode, True, self.font_color)
+                            if text_img.get_width() < self.rect.w - self.text_x * 2:
+                                self.text = self.text[:self.cursor_pos] + event.unicode + self.text[self.cursor_pos:]
+                                self.cursor_pos += 1
         if last_text != self.text:
             if str(type(self.onchange)) == "<class 'function'>":
                 if self.onchange_params != None:
                     self.onchange(*self.onchange_params)
                 else:
                     self.onchange()
+
+    def add_enabled_symbols(self, e):
+        self.enabled_symbols = e
+
+    def add_disabled_symbols(self, d):
+        self.disabled_symbols = d
 
     def add_onclick(self, p):
         self.onclick = p
@@ -112,8 +126,8 @@ class TextBox(Component):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
-        render_text(self.text, (self.rect.x + self.text_x, self.rect.y + self.rect.h / 2), screen, centery="center", font=self.font, color=self.color)
+        render_text(self.text, (self.rect.x + self.text_x, self.rect.y + self.rect.h / 2), screen, centery="center", font=self.font, color=self.font_color)
         if self.timer < 30 and self.input_manager.mouse_connect_object[0] == self:
-            text_img = self.font.render(self.text[:self.cursor_pos], True, self.color)
-            pygame.draw.rect(screen, self.color, (self.rect.x + self.text_x + text_img.get_width(), self.rect.y + self.rect.h / 2 - text_img.get_height() * 0.8 / 2, 2, text_img.get_height() * 0.8))
+            text_img = self.font.render(self.text[:self.cursor_pos], True, self.font_color)
+            pygame.draw.rect(screen, self.font_color, (self.rect.x + self.text_x + text_img.get_width(), self.rect.y + self.rect.h / 2 - text_img.get_height() * 0.8 / 2, 2, text_img.get_height() * 0.8))
         #render_text(str(self.cursor_pos), (0, 0), screen)
