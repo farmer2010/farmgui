@@ -17,7 +17,7 @@ class RadioButton(Component):
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_text_box_image(self.rect.w, self.rect.h, (80, 80, 80), ch=20)
         self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_text_box_image(self.rect.w, self.rect.h, (110, 110, 110), ch=20)
         #
-        self.c_inactive_image = kwargs.get("c_inactive_image") if kwargs.get("c_inactive_image") != None else get_button_image(self.rect.w - offset*2, self.rect.h - offset*2, 0, (110, 110, 110))
+        self.c_inactive_image = kwargs.get("c_inactive_image") if kwargs.get("c_inactive_image") != None else get_button_image(self.rect.w - offset*2, self.rect.h - offset*2, 0, (120, 120, 120))
         self.c_hover_image = kwargs.get("c_hover_image") if kwargs.get("c_hover_image") != None else get_button_image(self.rect.w - offset*2, self.rect.h - offset*2, 0, (140, 140, 140))
         self.image = self.inactive_image
         self.c_image = self.c_inactive_image

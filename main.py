@@ -1,5 +1,6 @@
 from gui import *
 import pygame
+import pyperclip
 pygame.init()
 
 screen = pygame.display.set_mode((1920, 1080))
@@ -36,7 +37,8 @@ buttons.add(slider)
 #
 buttons.add(NumberBox((50, 570, 70, 28), preset_value=10, max_value=10, change_value=1))
 buttons.add(NumberBox((150, 570, 70, 28), preset_value=5, max_value=10, change_value=0.1))
-
+#
+buttons.add(TextField((900, 100, 400, 600), font=pygame.font.Font("D:/Source_Code_Pro/static/SourceCodePro-Medium.ttf", 14)))
 
 while keep_going:
     events = pygame.event.get()
