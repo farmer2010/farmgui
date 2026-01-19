@@ -1,7 +1,9 @@
 import pygame
 pygame.init()
 
-def render_text(text, pos, screen, color=(0, 0, 0), centerx="left", centery="up", font=pygame.font.SysFont(None, 40)):#отрисовка текста на экране
+def render_text(text, pos, screen, color=(0, 0, 0), centerx="left", centery="up", font=None, font_name=None, font_size=24):#отрисовка текста на экране
+    if font == None:
+        font = pygame.font.SysFont(font_name, font_size)
     text_img = font.render(text, True, color)
     text_rect = text_img.get_rect()
     if centerx == "left":

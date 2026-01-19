@@ -110,6 +110,13 @@ class TextBox(Component):
                 else:
                     self.onchange()
 
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+        render_text(self.text, (self.rect.x + self.text_x, self.rect.y + self.rect.h / 2), screen, centery="center", font=self.font, color=self.font_color)
+        if self.timer < 30 and self.input_manager.mouse_connect_object[0] == self:
+            text_img = self.font.render(self.text[:self.cursor_pos], True, self.font_color)
+            pygame.draw.rect(screen, self.font_color, (self.rect.x + self.text_x + text_img.get_width(), self.rect.y + self.rect.h / 2 - text_img.get_height() / 2, 2, text_img.get_height()))
+
     def add_enabled_symbols(self, e):
         self.enabled_symbols = e
 
@@ -139,11 +146,3 @@ class TextBox(Component):
 
     def set_text(self, text):
         self.text = text
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
-        render_text(self.text, (self.rect.x + self.text_x, self.rect.y + self.rect.h / 2), screen, centery="center", font=self.font, color=self.font_color)
-        if self.timer < 30 and self.input_manager.mouse_connect_object[0] == self:
-            text_img = self.font.render(self.text[:self.cursor_pos], True, self.font_color)
-            pygame.draw.rect(screen, self.font_color, (self.rect.x + self.text_x + text_img.get_width(), self.rect.y + self.rect.h / 2 - text_img.get_height() * 0.8 / 2, 2, text_img.get_height() * 0.8))
-        #render_text(str(self.mousepos), (self.rect.x, self.rect.y + self.rect.h), screen)

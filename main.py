@@ -1,6 +1,5 @@
 from gui import *
 import pygame
-import pyperclip
 pygame.init()
 
 screen = pygame.display.set_mode((1920, 1080))
