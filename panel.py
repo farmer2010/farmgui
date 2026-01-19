@@ -7,7 +7,7 @@ class Panel(Component):
         Component.__init__(self, rect)
         self.background_image = kwargs.get("background_image")
         if kwargs.get("background_image") == None:
-            self.background_image = pygame.Surface((self.rect.w, self.rect.h))
+            self.background_image = pygame.Surface((self.rect.w, self.rect.h), pygame.SRCALPHA)
             self.background_image.fill(background_color)
         self.buttons = []
 

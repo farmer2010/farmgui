@@ -7,7 +7,34 @@ pygame.display.set_caption("GUI test")
 keep_going = 1
 timer = pygame.time.Clock()
 
+def colors(text_lines):
+    orange_letters = ["for", "in", "if", "elif", "else", "def", "lambda", "return", "try", "except", "pass", "class", "from", "import", "break", "and", "or", "not", "while"]
+    purple_letters = ["range", "open", "print", "str", "int", "list", "float"]
+    bord_symbols = [" ", "\n", "(", ")", "=", ":", "[", "]", "!", ">", "<", ",", "{", "}"]
+    ret = []
+    for i in range(len(text_lines)):
+        type = None
+        ind = 0
+        tst = ""
+        ret.append([])
+        for j in range(len(text_lines[i]) + 1):
+            if j < len(text_lines[i]):
+                t = text_lines[i][j]
+            else:
+                t = " "
+            if t in bord_symbols and type != "text":
+                if tst in orange_letters and tst != "":
+                    ret[i].append([ind, j, tst, (255, 128, 0)])
+                if tst in purple_letters and tst != "":
+                    ret[i].append([ind, j, (128, 0, 128), tst])
+                ind = j
+                tst = ""
+            if not t in bord_symbols:
+                tst += t
+    return(ret)
+
 buttons = ButtonManager(background_color=(255, 255, 255))
+#
 buttons.add(Button((50, 50, 200, 50), onrelease=lambda: print(1)))
 buttons.add(TextBox((50, 150, 200, 50)))
 buttons.add(Slider((50, 250, 200, 50), (44, 44)))
@@ -37,7 +64,9 @@ buttons.add(slider)
 buttons.add(NumberBox((50, 570, 70, 28), preset_value=10, max_value=10, change_value=1))
 buttons.add(NumberBox((150, 570, 70, 28), preset_value=5, max_value=10, change_value=0.1))
 #
-buttons.add(TextField((900, 100, 400, 600), font=pygame.font.Font("D:/Source_Code_Pro/static/SourceCodePro-Medium.ttf", 14)))
+buttons.add(TextField((900, 100, 400, 600), font=pygame.font.Font("D:/Source_Code_Pro/static/SourceCodePro-Medium.ttf", 14), color_text=colors))
+
+print(colors(["for dddd range"]))
 
 while keep_going:
     events = pygame.event.get()

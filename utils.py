@@ -19,3 +19,8 @@ def render_text(text, pos, screen, color=(0, 0, 0), centerx="left", centery="up"
     elif centery == "down":
         text_rect.y = pos[1] - text_img.get_height()
     screen.blit(text_img, text_rect)
+
+def render_colored_text(text, pos, screen, base_color=(0, 0, 0), centerx="left", centery="up", font=None, font_name=None, font_size=24, colors=[]):#отрисовка текста на экране
+    if font == None:
+        font = pygame.font.SysFont(font_name, font_size)
+    

@@ -6,8 +6,8 @@ class Component():
     def __init__(self, rect):
         self.rect = pygame.Rect(rect)
         self.input_manager = input_manager
-        self.image = pygame.Surface((self.rect.w, self.rect.h))
-        self.image.convert_alpha()
+        self.image = pygame.Surface((self.rect.w, self.rect.h), pygame.SRCALPHA)
+        #self.image.convert_alpha()
 
     def update_component(self, events, mousepos):
         self.update(events, mousepos)

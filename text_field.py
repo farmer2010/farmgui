@@ -40,6 +40,7 @@ class TextField(Component):
         self.cursor_pos = [0, 0]
         self.mouselast = 0
         self.h = self.font.render("W", 1, self.font_color).get_height()
+        self.colors = []
         #
         self.onclick = kwargs.get("onclick")
         self.onclick_params = kwargs.get("onclick_params")
@@ -47,6 +48,7 @@ class TextField(Component):
         self.onchange_params = kwargs.get("onchange_params")
         self.onsubmit = kwargs.get("onsubmit")
         self.onsubmit_params = kwargs.get("onsubmit_params")
+        self.color_text = kwargs.get("color_text")
         self.update_text_image()
 
     def update(self, events, mousepos):
@@ -140,6 +142,8 @@ class TextField(Component):
         #
         if last_text != self.text:
             self.update_text_image()
+            if self.color_text != None:
+                self.colors = self.color_text(self.text_lines)
             if str(type(self.onchange)) == "<class 'function'>":
                 if self.onchange_params != None:
                     self.onchange(*self.onchange_params)
@@ -197,6 +201,9 @@ class TextField(Component):
 
     def add_onsubmit_params(self, p):
         self.onsubmit_params = p
+
+    def add_color_text(self, p):
+        self.color_text = p
 
     def get_text(self):
         return(self.text)

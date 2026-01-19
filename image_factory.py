@@ -3,7 +3,7 @@ import pygame
 pygame.init()
 
 def get_button_image(w, h, type, color, offset=3, ch=30, text="", font=pygame.font.SysFont(None, 24), font_color=(0, 0, 0)):
-    img = pygame.Surface((w, h))
+    img = pygame.Surface((w, h), pygame.SRCALPHA)
     if type == 0 or type == 2:
         img.fill((color[0] + ch, color[1] + ch, color[2] + ch))
         pygame.draw.rect(img, (color[0] - ch, color[1] - ch, color[2] - ch), (offset, offset, w - offset, h - offset))
@@ -16,7 +16,7 @@ def get_button_image(w, h, type, color, offset=3, ch=30, text="", font=pygame.fo
     return(img)
 
 def get_text_box_image(w, h, color, offset=3, ch=30):
-    img = pygame.Surface((w, h))
+    img = pygame.Surface((w, h), pygame.SRCALPHA)
     img.fill((min(color[0] + ch*2, 255), min(color[1] + ch*2, 255), min(color[2] + ch*2, 255)))
     pygame.draw.rect(img, (max(color[0] - ch, 0), max(color[1] - ch, 0), max(color[2] - ch, 0)), (offset, offset, w - offset*2, h - offset*2))
     pygame.draw.rect(img, (min(color[0] + ch, 255), min(color[1] + ch, 255), min(color[2] + ch, 255)), (offset*2, offset*2, w - offset*3, h - offset*3))
@@ -24,7 +24,7 @@ def get_text_box_image(w, h, color, offset=3, ch=30):
     return(img)
 
 def get_slider_image(w, h, color, offset=3, ch=30):
-    img = pygame.Surface((w, h))
+    img = pygame.Surface((w, h), pygame.SRCALPHA)
     img.fill((min(color[0] + ch * 2, 255), min(color[1] + ch * 2, 255), min(color[2] + ch * 2, 255)))
     pygame.draw.rect(img, (max(color[0] - ch, 0), max(color[1] - ch, 0), max(color[2] - ch, 0)), (offset, offset, w - offset * 2, h - offset * 2))
     pygame.draw.rect(img, (min(color[0] + ch, 255), min(color[1] + ch, 255), min(color[2] + ch, 255)), (offset * 2, offset * 2, w - offset * 3, h - offset * 3))
