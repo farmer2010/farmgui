@@ -8,9 +8,10 @@ keep_going = 1
 timer = pygame.time.Clock()
 
 def colors(text_lines):
-    orange_letters = ["for", "in", "if", "elif", "else", "def", "lambda", "return", "try", "except", "pass", "class", "from", "import", "break", "and", "or", "not", "while"]
-    purple_letters = ["range", "open", "print", "str", "int", "list", "float"]
-    bord_symbols = [" ", "\n", "(", ")", "=", ":", "[", "]", "!", ">", "<", ",", "{", "}"]
+    orange_letters = ["for", "in", "if", "elif", "else", "def", "lambda", "return", "try", "except", "pass", "class", "from", "import", "break", "and", "or", "not", "while", "None", "True", "False"]
+    purple_letters = ["range", "open", "print", "str", "int", "list", "float", "len"]
+    bord_symbols = [" ", "\n", "(", ")", "=", ":", "[", "]", "!", ">", "<", ",", "{", "}", ".", "+", "-", "/", "*", "#"]
+    string_bord_symbols = ["'", '"']
     ret = []
     for i in range(len(text_lines)):
         type = None
@@ -21,14 +22,34 @@ def colors(text_lines):
             if j < len(text_lines[i]):
                 t = text_lines[i][j]
             else:
-                t = " "
-            if t in bord_symbols and type != "text":
-                if tst in orange_letters and tst != "":
-                    ret[i].append([ind, j, tst, (255, 128, 0)])
-                if tst in purple_letters and tst != "":
-                    ret[i].append([ind, j, (128, 0, 128), tst])
+                if type == None:
+                    t = " "
+                elif type == "text":
+                    t = '"'
+            if t in string_bord_symbols:
+                if type == None:
+                    type = "text"
+                elif type == "text":
+                    type = None
+                    if tst != "":
+                        ret[i].append([ind, j + 1, (0, 100, 0), tst])
                 ind = j
                 tst = ""
+            if t in bord_symbols and type == None:
+                if tst != "":
+                    try:
+                        int(tst)
+                        ret[i].append([ind, j, (0, 80, 255), tst])
+                    except:
+                        if tst in orange_letters:
+                            ret[i].append([ind, j, (255, 100, 0), tst])
+                        if tst in purple_letters:
+                            ret[i].append([ind, j, (100, 0, 100), tst])
+                ind = j + 1
+                tst = ""
+            if t == "#" and type == None:
+                ret[i].append([ind - 1, len(text_lines[i]), (230, 0, 0), tst])
+                break
             if not t in bord_symbols:
                 tst += t
     return(ret)
@@ -65,8 +86,6 @@ buttons.add(NumberBox((50, 570, 70, 28), preset_value=10, max_value=10, change_v
 buttons.add(NumberBox((150, 570, 70, 28), preset_value=5, max_value=10, change_value=0.1))
 #
 buttons.add(TextField((900, 100, 400, 600), font=pygame.font.Font("D:/Source_Code_Pro/static/SourceCodePro-Medium.ttf", 14), color_text=colors))
-
-print(colors(["for dddd range"]))
 
 while keep_going:
     events = pygame.event.get()

@@ -50,6 +50,8 @@ class TextField(Component):
         self.onsubmit_params = kwargs.get("onsubmit_params")
         self.color_text = kwargs.get("color_text")
         self.update_text_image()
+        if self.color_text != None:
+            self.colors = self.color_text(self.text_lines)
 
     def update(self, events, mousepos):
         self.timer += 1
@@ -171,8 +173,9 @@ class TextField(Component):
     def draw(self, screen):
         screen.blit(self.image, self.rect)
         h = 0
-        for t in self.text_lines:
-            render_text(t, (self.rect.x + self.text_x, self.rect.y + self.text_y + h), screen, font=self.font, color=self.font_color)
+        for i in range(len(self.text_lines)):
+            t = self.text_lines[i]
+            render_colored_text(t, (self.rect.x + self.text_x, self.rect.y + self.text_y + h), screen, font=self.font, base_color=self.font_color, colors=self.colors[i])
             h += self.h
         if self.input_manager.mouse_connect_object[0] == self and self.timer > 30:
             text_img = self.font.render(self.text_lines[self.cursor_pos[1]][:self.cursor_pos[0]], True, self.font_color)
