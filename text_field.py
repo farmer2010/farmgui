@@ -16,6 +16,8 @@ class TextField(Component):
                  text_y=10,
                  enabled_symbols=None,
                  disabled_symbols=[],
+                 scroll_x=False,
+                 scroll_y=False,
                  **kwargs
                  ):
         Component.__init__(self, rect)
@@ -41,6 +43,8 @@ class TextField(Component):
         self.mouselast = 0
         self.h = self.font.render("W", 1, self.font_color).get_height()
         self.colors = []
+        self.scroll_x = scroll_x
+        self.scroll_y = scroll_y
         #
         self.onclick = kwargs.get("onclick")
         self.onclick_params = kwargs.get("onclick_params")

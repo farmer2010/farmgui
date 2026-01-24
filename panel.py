@@ -12,6 +12,7 @@ class Panel(Component):
         self.buttons = []
 
     def update_component(self, events, mousepos):
+        self.update(events, mousepos)
         mousedown = pygame.mouse.get_pressed()[0]
         mouse_collide = (mousepos[0] >= self.rect.x and mousepos[0] <= self.rect.x + self.rect.w) and (mousepos[1] >= self.rect.y and mousepos[1] <= self.rect.y + self.rect.h)
         if mouse_collide:
