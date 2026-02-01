@@ -42,7 +42,7 @@ class Slider(Component):
         self.update_text = None
         self.center = center
         self.last_value = self.value
-        self.st_x = 0
+        self.stx = 0
 
     def update(self, events, mousepos):
         self.last_value = self.value
@@ -51,13 +51,7 @@ class Slider(Component):
         if mouse_collide:
             if mousedown:
                 if self.input_manager.mousetag_object[0] == None:
-                    cx = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
-                    self.st_x = mousepos[0] - self.rect.x - self.offset
-                    #if mx + cx > 0 and mx + cx < self.c_rect[0]:
-                    #    self.st_x = mx - cx
-                    #else:
-                    #    self.st_x = self.c_rect[0] / 2
-                    self.update_param()
+                    self.update_param_onclick()
                     #
                     if str(type(self.onclick)) == "<class 'function'>":
                         if self.onclick_params != None:
@@ -85,10 +79,10 @@ class Slider(Component):
         mousepos = pygame.mouse.get_pos()
         pos = (mousepos[0] - self.rect.x, mousepos[1] - self.rect.y)
         cx = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
-        if not(pos[0] - self.offset + cx > 0 and pos[0] - self.offset + cx < self.c_rect[0]):
-            #pos = (mousepos[0] - self.rect.x + self.st_x, mousepos[1] - self.rect.y)
+        if not(pos[0] - self.offset - cx > 0 and pos[0] - self.offset - cx < self.c_rect[0]) or 1:
+            pos = (mousepos[0] - self.rect.x + (self.c_rect[0]/2 - self.stx), mousepos[1] - self.rect.y)
             if pos[0] >= self.offset + self.c_rect[0] / 2 and pos[0] < self.rect.w - self.offset - self.c_rect[0] / 2:
-                self.value = self.min_value + (pos[0] - self.offset - self.c_rect[0] / 2 - self.st_x) / (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.max_value - self.min_value)
+                self.value = self.min_value + (pos[0] - self.offset - self.c_rect[0] / 2) / (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.max_value - self.min_value)
             elif pos[0] < self.offset + self.c_rect[0] / 2:
                 self.value = self.min_value
             elif pos[0] >= self.rect.w - self.offset * 2 - self.c_rect[0] / 2:
@@ -96,10 +90,31 @@ class Slider(Component):
         if self.type == "int":
             self.value = round(self.value)
 
+    def update_param_onclick(self):
+        mousepos = pygame.mouse.get_pos()
+        pos = (mousepos[0] - self.rect.x, mousepos[1] - self.rect.y)
+        cx = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
+        mx = mousepos[0] - self.rect.x - self.offset
+        if not (pos[0] - self.offset - cx > 0 and pos[0] - self.offset - cx < self.c_rect[0]):
+            self.stx = self.c_rect[0] / 2
+            #
+            pos = (mousepos[0] - self.rect.x - self.stx / 2, mousepos[1] - self.rect.y)
+            if pos[0] >= self.offset + self.c_rect[0] / 2 and pos[0] < self.rect.w - self.offset - self.c_rect[0] / 2:
+                self.value = self.min_value + (pos[0] - self.offset - self.c_rect[0] / 2) / (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.max_value - self.min_value)
+            elif pos[0] < self.offset + self.c_rect[0] / 2:
+                self.value = self.min_value
+            elif pos[0] >= self.rect.w - self.offset * 2 - self.c_rect[0] / 2:
+                self.value = self.max_value
+        else:
+            self.stx = mx - cx
+        if self.type == "int":
+            self.value = round(self.value)
+
     def draw(self, screen):
         screen.blit(self.image, self.rect)
         x = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
         screen.blit(self.c_image, (self.rect.x + self.offset + x, (self.rect.y + self.rect.h / 2) - (self.c_rect[1] / 2)))
+        p = pygame.mouse.get_pos()[0] - self.rect.x
         img = self.font.render(self.text, self.font_alpha, self.font_color)
         screen.blit(img, (self.rect.x + self.rect.w * self.center[0] - img.get_width() * self.center[2], self.rect.y + self.rect.h * self.center[1] - img.get_height() * self.center[3]))
 

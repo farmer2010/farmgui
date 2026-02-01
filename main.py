@@ -58,7 +58,7 @@ buttons = ButtonManager(background_color=(255, 255, 255))
 #
 buttons.add(Button((50, 50, 200, 50), onrelease=lambda: print(1)))
 buttons.add(TextBox((50, 150, 200, 50)))
-buttons.add(Slider((50, 250, 200, 50), (44, 44)))
+buttons.add(Slider((50, 250, 200, 50), (44, 44), font_size=20))
 buttons.add(RadioButton((50, 350, 30, 30)))
 #
 panel = Panel((500, 100, 300, 600), background_color=(180, 180, 180))
@@ -78,7 +78,7 @@ label = TextLabel("", (0, 30))
 label.add_update_text(lambda: "value: " + str(buttons.get_component(2).get_value()))
 buttons.add(label)
 #
-slider = Slider((275, 250, 200, 50), (44, 44))
+slider = Slider((275, 250, 200, 50), (44, 44), font_size=20)
 slider.add_update_text(lambda x: "value: " + str(x))
 buttons.add(slider)
 #
