@@ -13,12 +13,12 @@ class Button(Component):
                  font_size=30,
                  font_color=(0, 0, 0),
                  font_alpha=True,
-                 center=(0.5, 0.5, 0.5, 0.5),
+                 font_center=(0.5, 0.5, 0.5, 0.5),
                  **kwargs):
-        Component.__init__(self, rect)
-        self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_button_image(self.rect.w, self.rect.h, 0, (90, 90, 90))
-        self.pressed_image = kwargs.get("pressed_image") if kwargs.get("pressed_image") != None else get_button_image(self.rect.w, self.rect.h, 1, (50, 50, 50))
-        self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_button_image(self.rect.w, self.rect.h, 2, (120, 120, 120))
+        Component.__init__(self, rect, kwargs.get("center"))
+        self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_button_image(self.rect.w, self.rect.h, 0, (160, 0, 0))#90
+        self.pressed_image = kwargs.get("pressed_image") if kwargs.get("pressed_image") != None else get_button_image(self.rect.w, self.rect.h, 1, (130, 0, 0))#50
+        self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_button_image(self.rect.w, self.rect.h, 2, (190, 0, 0))#120
         self.image = self.inactive_image
         self.onclick = kwargs.get("onclick")
         self.onclick_params = kwargs.get("onclick_params")
@@ -33,11 +33,11 @@ class Button(Component):
         self.font_color = font_color
         self.font_alpha = font_alpha
         self.update_text = None
-        self.center = center
+        self.center = font_center
 
-    def update(self, events, mousepos):
+    def update(self, events):
         mousedown = pygame.mouse.get_pressed()[0]
-        mouse_collide = (mousepos[0] >= self.rect.x and mousepos[0] <= self.rect.x + self.rect.w) and (mousepos[1] >= self.rect.y and mousepos[1] <= self.rect.y + self.rect.h)
+        mouse_collide = self.collide()
         if mouse_collide:
             if mousedown:
                 if self.input_manager.mousetag_object[0] == None:

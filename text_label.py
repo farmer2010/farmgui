@@ -2,10 +2,10 @@ from utils import *
 from component import *
 
 class TextLabel(Component):
-    def __init__(self, text, pos, font=None, font_name=None, font_size=30, font_color=(0, 0, 0), font_alpha=True):
+    def __init__(self, text, pos, font=None, font_name=None, font_size=30, font_color=(0, 0, 0), font_alpha=True, center=(0, 0)):
         if font == None: font = pygame.font.SysFont(font_name, font_size)
         img = font.render(text, font_alpha, font_color)
-        Component.__init__(self, img.get_rect())
+        Component.__init__(self, img.get_rect(), center)
         self.image = img
         self.rect.x = pos[0]
         self.rect.y = pos[1]
@@ -22,7 +22,7 @@ class TextLabel(Component):
     def set_text(self, text):
         self.text = text
 
-    def update(self, events, mousepos):
+    def update(self, events):
         if self.update_text != None:
             self.text = self.update_text()
 

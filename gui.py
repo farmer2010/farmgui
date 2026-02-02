@@ -13,10 +13,10 @@ from utils import *
 class ButtonManager():
     def __init__(self, background_color=(50, 50, 50), background_image=None):
         self.input_manager = input_manager
-        self.screenpanel = Panel((0, 0, pygame.display.Info().current_w, pygame.display.Info().current_h), background_color=background_color, background_image=background_image)
+        self.screenpanel = Panel((0, 0, pygame.display.Info().current_w, pygame.display.Info().current_h), background_color=background_color, background_image=background_image, is_main=1)
 
     def update(self, screen, events):
-        self.screenpanel.update_component(events, pygame.mouse.get_pos())
+        self.screenpanel.update_component(events)
         self.screenpanel.draw(screen)
         self.input_manager.update(events)
 

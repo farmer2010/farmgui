@@ -71,7 +71,7 @@ class NumberBox(Panel):
         #
         textbox = TextBox((0, 0, self.rect.w - self.rect.h / 2, self.rect.h), text=str(preset_value), font_size=16, text_x=5, onsubmit=text_to_number, onsubmit_params=[self])
         textbox.add_enabled_symbols(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "-"])
-        self.buttons.append(textbox)
+        self.add(textbox)
         #
         button1 = Button((self.rect.w - self.rect.h / 2, 0, self.rect.h / 2, self.rect.h / 2))
         button1.timer = 0
@@ -79,7 +79,7 @@ class NumberBox(Panel):
         button1.add_onrelease_params((self.buttons[0], change_value, min_value, max_value, self))
         button1.add_onpressed(up_scroll)
         button1.add_onpressed_params([self])
-        self.buttons.append(button1)
+        self.add(button1)
         #
         button2 = Button((self.rect.w - self.rect.h / 2, self.rect.h / 2, self.rect.h / 2, self.rect.h / 2))
         button2.timer = 0
@@ -87,7 +87,7 @@ class NumberBox(Panel):
         button2.add_onrelease_params((self.buttons[0], change_value, min_value, max_value, self))
         button2.add_onpressed(down_scroll)
         button2.add_onpressed_params([self])
-        self.buttons.append(button2)
+        self.add(button2)
 
     def get_value(self):
         if self.period == 1:

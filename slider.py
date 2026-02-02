@@ -10,10 +10,10 @@ class Slider(Component):
                  c_rect,
                  preset_value=0, min_value=0, max_value=100, value_type="int",
                  offset=3,
-                 font=None, font_name=None, font_size=30, font_color=(0, 0, 0), font_alpha=True, center=(0.5, 0.5, 0.5, 0.5),
+                 font=None, font_name=None, font_size=30, font_color=(0, 0, 0), font_alpha=True, font_center=(0.5, 0.5, 0.5, 0.5),
                  **kwargs
                  ):
-        Component.__init__(self, rect)
+        Component.__init__(self, rect, kwargs.get("center"))
         self.c_rect = c_rect
         self.value = preset_value
         self.min_value = min_value
@@ -40,14 +40,14 @@ class Slider(Component):
         self.font_color = font_color
         self.font_alpha = font_alpha
         self.update_text = None
-        self.center = center
+        self.center = font_center
         self.last_value = self.value
         self.stx = 0
 
-    def update(self, events, mousepos):
+    def update(self, events):
         self.last_value = self.value
         mousedown = pygame.mouse.get_pressed()[0]
-        mouse_collide = (mousepos[0] >= self.rect.x and mousepos[0] <= self.rect.x + self.rect.w) and (mousepos[1] >= self.rect.y and mousepos[1] <= self.rect.y + self.rect.h)
+        mouse_collide = self.collide()
         if mouse_collide:
             if mousedown:
                 if self.input_manager.mousetag_object[0] == None:
@@ -76,7 +76,7 @@ class Slider(Component):
                     self.onchange()
 
     def update_param(self):
-        mousepos = pygame.mouse.get_pos()
+        mousepos = self.get_mousepos()
         pos = (mousepos[0] - self.rect.x, mousepos[1] - self.rect.y)
         cx = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
         if not(pos[0] - self.offset - cx > 0 and pos[0] - self.offset - cx < self.c_rect[0]) or 1:
@@ -91,7 +91,7 @@ class Slider(Component):
             self.value = round(self.value)
 
     def update_param_onclick(self):
-        mousepos = pygame.mouse.get_pos()
+        mousepos = self.get_mousepos()
         pos = (mousepos[0] - self.rect.x, mousepos[1] - self.rect.y)
         cx = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
         mx = mousepos[0] - self.rect.x - self.offset
@@ -114,7 +114,6 @@ class Slider(Component):
         screen.blit(self.image, self.rect)
         x = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
         screen.blit(self.c_image, (self.rect.x + self.offset + x, (self.rect.y + self.rect.h / 2) - (self.c_rect[1] / 2)))
-        p = pygame.mouse.get_pos()[0] - self.rect.x
         img = self.font.render(self.text, self.font_alpha, self.font_color)
         screen.blit(img, (self.rect.x + self.rect.w * self.center[0] - img.get_width() * self.center[2], self.rect.y + self.rect.h * self.center[1] - img.get_height() * self.center[3]))
 

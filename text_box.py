@@ -16,7 +16,7 @@ class TextBox(Component):
                  disabled_symbols=[],
                  **kwargs
                  ):
-        Component.__init__(self, rect)
+        Component.__init__(self, rect, kwargs.get("center"))
         self.text = text
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_text_box_image(self.rect.w, self.rect.h, (90, 90, 90))
         self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_text_box_image(self.rect.w, self.rect.h, (120, 120, 120))
@@ -40,11 +40,12 @@ class TextBox(Component):
         self.timer = 0
         self.cursor_pos = 0
 
-    def update(self, events, mousepos):
+    def update(self, events):
         self.timer += 1
         self.timer %= 60
         mousedown = pygame.mouse.get_pressed()[0]
-        mouse_collide = (mousepos[0] >= self.rect.x and mousepos[0] <= self.rect.x + self.rect.w) and (mousepos[1] >= self.rect.y and mousepos[1] <= self.rect.y + self.rect.h)
+        mousepos = self.get_mousepos()
+        mouse_collide = self.collide()
         last_text = self.text
         if mouse_collide:
             if mousedown:

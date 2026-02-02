@@ -12,7 +12,7 @@ class RadioButton(Component):
                  text="", font=None, font_name=None, font_size=30, font_color=(0, 0, 0), font_alpha=True, center=(0.5, 0.5), x_offset=5,
                  **kwargs
                  ):
-        Component.__init__(self, rect)
+        Component.__init__(self, rect, kwargs.get("center"))
         self.offset = offset
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_text_box_image(self.rect.w, self.rect.h, (80, 80, 80), ch=20)
         self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_text_box_image(self.rect.w, self.rect.h, (110, 110, 110), ch=20)
@@ -38,9 +38,9 @@ class RadioButton(Component):
         self.center = center
         self.x_offset = x_offset
 
-    def update(self, events, mousepos):
+    def update(self, events):
         mousedown = pygame.mouse.get_pressed()[0]
-        mouse_collide = (mousepos[0] >= self.rect.x and mousepos[0] <= self.rect.x + self.rect.w) and (mousepos[1] >= self.rect.y and mousepos[1] <= self.rect.y + self.rect.h)
+        mouse_collide = self.collide()
         if mouse_collide:
             if mousedown:
                 if self.input_manager.mousetag_object[0] == None:
