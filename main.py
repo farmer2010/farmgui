@@ -1,6 +1,12 @@
-from gui import *
+import shutil
+from farmgui import *
 import pygame
 pygame.init()
+
+try:
+    shutil.rmtree("farmgui/__pycache__")
+except:
+    pass
 
 screen = pygame.display.set_mode((1920, 1080))
 pygame.display.set_caption("GUI test")
@@ -9,7 +15,7 @@ timer = pygame.time.Clock()
 
 def colors(text_lines):
     orange_letters = ["for", "in", "if", "elif", "else", "def", "lambda", "return", "try", "except", "pass", "class", "from", "import", "break", "and", "or", "not", "while", "None", "True", "False"]
-    purple_letters = ["range", "open", "print", "str", "int", "list", "float", "len"]
+    purple_letters = ["range", "open", "print", "str", "int", "list", "float", "len", "input"]
     bord_symbols = [" ", "\n", "(", ")", "=", ":", "[", "]", "!", ">", "<", ",", "{", "}", ".", "+", "-", "/", "*", "#"]
     string_bord_symbols = ["'", '"']
     ret = []
@@ -60,12 +66,22 @@ buttons.add(Button((50, 50, 200, 50), onrelease=lambda: print(1)))
 buttons.add(TextBox((50, 150, 200, 50)))
 buttons.add(Slider((50, 250, 200, 50), (44, 44)))
 buttons.add(RadioButton((50, 350, 30, 30)))
+buttons.add(Slider((50, 650, 200, 50), (44, 22)))
+buttons.add(Slider((50, 710, 50, 200), (44, 44), vertical=True))
 #
 panel = Panel((500, 100, 300, 600), background_color=(180, 180, 180))
 panel.add(Button((5, 5, 250, 35), text="button 1"))
 panel.add(Button((5, 45, 250, 35), text="button 2"))
 panel.add(Button((5, 85, 250, 35), text="button 3"))
 buttons.add(panel)
+#
+panel2 = Panel((10, 140, 200, 300))
+panel2.add(Button((5, 5, 150, 35), text="button 4"))
+panel.add(panel2)
+#
+panel3 = Panel((10, 60, 180, 200), background_color=(180, 180, 180))
+panel3.add(Button((5, 5, 150, 35), text="button 5"))
+panel2.add(panel3)
 #
 group = RadioButtonGroup()
 buttons.add(RadioButton((50, 400, 30, 30), selected=1, group=group, text="1"))
@@ -77,6 +93,9 @@ buttons.add(TextLabel("Hello world!", (0, 0), font_color=(0, 128, 255)))
 label = TextLabel("", (0, 30))
 label.add_update_text(lambda: "value: " + str(buttons.get_component(2).get_value()))
 buttons.add(label)
+label2 = TextLabel("", (0, 60))
+label2.add_update_text(lambda: "fps: " + str(round(timer.get_fps(), 1)))
+buttons.add(label2)
 #
 slider = Slider((275, 250, 200, 50), (44, 44))
 slider.add_update_text(lambda x: "value: " + str(x))

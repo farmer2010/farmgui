@@ -63,8 +63,8 @@ class Panel(Component):
         else:
             return(mousepos)
 
-    def get_component(self, index):
-        return(self.buttons[index])
+    def get_components(self):
+        return(self.buttons)
 
     def get_component_count(self):
         return(len(self.buttons))

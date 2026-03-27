@@ -5,26 +5,28 @@ pygame.init()
 
 class Slider(Component):
     def __init__(self,
-                 rect,
-                 c_rect,
-                 preset_value=0, min_value=0, max_value=100, value_type="int",
-                 offset=3,
-                 font=None, font_name=None, font_size=30, font_color=(0, 0, 0), font_alpha=True, font_center=(0.5, 0.5, 0.5, 0.5),
-                 **kwargs
-                 ):
+            rect,
+            c_rect,
+            preset_value=0, min_value=0, max_value=100, period=0,
+            offset=3,
+            font=None, font_name=None, font_size=30, font_color=(0, 0, 0), font_alpha=True, font_center=(0.5, 0.5, 0.5, 0.5),
+            vertical=False,
+            **kwargs
+        ):
         Component.__init__(self, rect, kwargs.get("center"))
         self.c_rect = c_rect
         self.value = preset_value
         self.min_value = min_value
         self.max_value = max_value
         self.offset = offset
-        self.type = value_type
+        self.period = period
+        self.vertical = vertical
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_slider_image(self.rect.w, self.rect.h, (90, 90, 90))
         self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_slider_image(self.rect.w, self.rect.h, (120, 120, 120))
         self.image = self.inactive_image
         #
-        self.c_inactive_image = kwargs.get("c_inactive_image") if kwargs.get("c_inactive_image") != None else get_button_image(self.c_rect[0], self.c_rect[1], 0, (60, 60, 60))
-        self.c_hover_image = kwargs.get("c_hover_image") if kwargs.get("c_hover_image") != None else get_button_image(self.c_rect[0], self.c_rect[1], 0, (90, 90, 90))
+        self.c_inactive_image = kwargs.get("c_inactive_image") if kwargs.get("c_inactive_image") != None else get_button_image(self.c_rect[0], self.c_rect[1], 0, (50, 50, 50))
+        self.c_hover_image = kwargs.get("c_hover_image") if kwargs.get("c_hover_image") != None else get_button_image(self.c_rect[0], self.c_rect[1], 0, (80, 80, 80))
         self.c_image = self.c_inactive_image
         #
         self.onclick = kwargs.get("onclick")
@@ -77,8 +79,7 @@ class Slider(Component):
     def update_param(self):
         mousepos = self.get_mousepos()
         pos = (mousepos[0] - self.rect.x, mousepos[1] - self.rect.y)
-        cx = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
-        if not(pos[0] - self.offset - cx > 0 and pos[0] - self.offset - cx < self.c_rect[0]) or 1:
+        if not self.vertical:
             pos = (mousepos[0] - self.rect.x + (self.c_rect[0]/2 - self.stx), mousepos[1] - self.rect.y)
             if pos[0] >= self.offset + self.c_rect[0] / 2 and pos[0] < self.rect.w - self.offset - self.c_rect[0] / 2:
                 self.value = self.min_value + (pos[0] - self.offset - self.c_rect[0] / 2) / (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.max_value - self.min_value)
@@ -86,35 +87,63 @@ class Slider(Component):
                 self.value = self.min_value
             elif pos[0] >= self.rect.w - self.offset * 2 - self.c_rect[0] / 2:
                 self.value = self.max_value
-        if self.type == "int":
-            self.value = round(self.value)
+        else:
+            pos = (mousepos[0] - self.rect.x, mousepos[1] - self.rect.y + (self.c_rect[1] / 2 - self.stx))
+            if pos[1] >= self.offset + self.c_rect[1] / 2 and pos[1] < self.rect.h - self.offset - self.c_rect[1] / 2:
+                self.value = self.min_value + (pos[1] - self.offset - self.c_rect[1] / 2) / (self.rect.h - self.offset * 2 - self.c_rect[1]) * (self.max_value - self.min_value)
+            elif pos[1] < self.offset + self.c_rect[1] / 2:
+                self.value = self.min_value
+            elif pos[1] >= self.rect.h - self.offset * 2 - self.c_rect[1] / 2:
+                self.value = self.max_value
+        self.value = round(self.value, self.period)
 
     def update_param_onclick(self):
         mousepos = self.get_mousepos()
         pos = (mousepos[0] - self.rect.x, mousepos[1] - self.rect.y)
-        cx = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
-        mx = mousepos[0] - self.rect.x - self.offset
-        if not (pos[0] - self.offset - cx > 0 and pos[0] - self.offset - cx < self.c_rect[0]):
-            self.stx = self.c_rect[0] / 2
-            #
-            pos = (mousepos[0] - self.rect.x - self.stx / 2, mousepos[1] - self.rect.y)
-            if pos[0] >= self.offset + self.c_rect[0] / 2 and pos[0] < self.rect.w - self.offset - self.c_rect[0] / 2:
-                self.value = self.min_value + (pos[0] - self.offset - self.c_rect[0] / 2) / (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.max_value - self.min_value)
-            elif pos[0] < self.offset + self.c_rect[0] / 2:
-                self.value = self.min_value
-            elif pos[0] >= self.rect.w - self.offset * 2 - self.c_rect[0] / 2:
-                self.value = self.max_value
+        if not self.vertical:
+            cx = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
+            mx = mousepos[0] - self.rect.x - self.offset
+            if not (pos[0] - self.offset - cx > 0 and pos[0] - self.offset - cx < self.c_rect[0]):
+                self.stx = self.c_rect[0] / 2
+                #
+                pos = (mousepos[0] - self.rect.x - self.stx / 2, mousepos[1] - self.rect.y)
+                if pos[0] >= self.offset + self.c_rect[0] / 2 and pos[0] < self.rect.w - self.offset - self.c_rect[0] / 2:
+                    self.value = self.min_value + (pos[0] - self.offset - self.c_rect[0] / 2) / (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.max_value - self.min_value)
+                elif pos[0] < self.offset + self.c_rect[0] / 2:
+                    self.value = self.min_value
+                elif pos[0] >= self.rect.w - self.offset * 2 - self.c_rect[0] / 2:
+                    self.value = self.max_value
+            else:
+                self.stx = mx - cx
         else:
-            self.stx = mx - cx
-        if self.type == "int":
-            self.value = round(self.value)
+            cy = (self.rect.h - self.offset * 2 - self.c_rect[1]) * (self.value / (self.max_value - self.min_value))
+            my = mousepos[1] - self.rect.y - self.offset
+            if not (pos[1] - self.offset - cy > 0 and pos[1] - self.offset - cy < self.c_rect[1]):
+                self.stx = self.c_rect[1] / 2
+                #
+                pos = (mousepos[0] - self.rect.x, mousepos[1] - self.rect.y - self.stx / 2)
+                if pos[1] >= self.offset + self.c_rect[1] / 2 and pos[1] < self.rect.h - self.offset - self.c_rect[1] / 2:
+                    self.value = self.min_value + (pos[1] - self.offset - self.c_rect[1] / 2) / (self.rect.h - self.offset * 2 - self.c_rect[1]) * (self.max_value - self.min_value)
+                elif pos[1] < self.offset + self.c_rect[1] / 2:
+                    self.value = self.min_value
+                elif pos[1] >= self.rect.h - self.offset * 2 - self.c_rect[1] / 2:
+                    self.value = self.max_value
+            else:
+                self.stx = my - cy
+        self.value = round(self.value, self.period)
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
-        x = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
-        screen.blit(self.c_image, (self.rect.x + self.offset + x, (self.rect.y + self.rect.h / 2) - (self.c_rect[1] / 2)))
-        img = self.font.render(self.text, self.font_alpha, self.font_color)
-        screen.blit(img, (self.rect.x + self.rect.w * self.center[0] - img.get_width() * self.center[2], self.rect.y + self.rect.h * self.center[1] - img.get_height() * self.center[3]))
+        if not self.vertical:
+            x = (self.rect.w - self.offset * 2 - self.c_rect[0]) * (self.value / (self.max_value - self.min_value))
+            screen.blit(self.c_image, (self.rect.x + self.offset + x, (self.rect.y + self.rect.h / 2) - (self.c_rect[1] / 2)))
+            img = self.font.render(self.text, self.font_alpha, self.font_color)
+            screen.blit(img, (self.rect.x + self.rect.w * self.center[0] - img.get_width() * self.center[2], self.rect.y + self.rect.h * self.center[1] - img.get_height() * self.center[3]))
+        else:
+            y = (self.rect.h - self.offset * 2 - self.c_rect[1]) * (self.value / (self.max_value - self.min_value))
+            screen.blit(self.c_image, ((self.rect.x + self.rect.w / 2) - (self.c_rect[0] / 2), self.rect.y + self.offset + y))
+            img = self.font.render(self.text, self.font_alpha, self.font_color)
+            screen.blit(img, (self.rect.x + self.rect.w * self.center[0] - img.get_width() * self.center[2], self.rect.y + self.rect.h * self.center[1] - img.get_height() * self.center[3]))
 
     def add_onclick(self, p):
         self.onclick = p
