@@ -78,6 +78,7 @@ buttons.add(panel)
 panel2 = Panel((10, 140, 200, 300))
 panel2.add(Button((5, 5, 150, 35), text="button 4"))
 panel2.add(Slider((5, 270, 150, 35), (29, 29)))
+
 panel.add(panel2)
 #
 panel3 = Panel((10, 60, 180, 200), background_color=(180, 180, 180))
@@ -98,6 +99,9 @@ buttons.add(label)
 label2 = TextLabel("", (0, 60))
 label2.add_update_text(lambda: "fps: " + str(round(timer.get_fps(), 1)))
 buttons.add(label2)
+label3 = TextLabel("", (200, 0))
+label3.add_update_text(lambda: str(buttons.input_manager.mousetag_object[0]))
+buttons.add(label3)
 #
 slider = Slider((275, 250, 200, 50), (44, 44))
 slider.add_update_text(lambda x: "value: " + str(x))

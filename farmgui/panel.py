@@ -15,7 +15,7 @@ class Panel(Component):
         self.is_panel = 1
 
     def update_component(self, events):
-        if self.is_main and self.first_upd:
+        if self.is_main and self.first_upd:#если главная панель запускается в первый раз, то она определяет абсолютную позицию у всех дочерних компонентов
             self.first_upd = 0
             self.set_absolute_pos()
         self.update(events)
@@ -29,6 +29,7 @@ class Panel(Component):
                         m_c = b.collide()
                         press_button = m_c
                         if m_c:
+                            print(self, b)
                             break
                     if not press_button:
                         self.input_manager.mousetag_object[0] = self
@@ -58,7 +59,7 @@ class Panel(Component):
     def get_mousepos(self):
         mousepos = pygame.mouse.get_pos()
         if self.is_main == 0:
-            mpos = (mousepos[0] - self.parent.rect.x, mousepos[1] - self.parent.rect.y)#позиция мыши относительно родительского компонента
+            mpos = (mousepos[0] - self.parent.absolute_pos[0], mousepos[1] - self.parent.absolute_pos[1])#позиция мыши относительно родительского компонента
             return(mpos)
         else:
             return(mousepos)
