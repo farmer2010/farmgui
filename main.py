@@ -77,10 +77,12 @@ buttons.add(panel)
 #
 panel2 = Panel((10, 140, 200, 300))
 panel2.add(Button((5, 5, 150, 35), text="button 4"))
+panel2.add(Slider((5, 270, 150, 35), (29, 29)))
 panel.add(panel2)
 #
 panel3 = Panel((10, 60, 180, 200), background_color=(180, 180, 180))
 panel3.add(Button((5, 5, 150, 35), text="button 5"))
+panel3.add(Slider((5, 45, 150, 35), (29, 29)))
 panel2.add(panel3)
 #
 group = RadioButtonGroup()
@@ -104,7 +106,8 @@ buttons.add(slider)
 buttons.add(NumberBox((50, 570, 70, 28), preset_value=10, max_value=10, change_value=1))
 buttons.add(NumberBox((150, 570, 70, 28), preset_value=5, max_value=10, change_value=0.1))
 #
-buttons.add(TextField((900, 100, 400, 600), font=pygame.font.Font("D:/Source_Code_Pro/static/SourceCodePro-Medium.ttf", 14), color_text=colors))
+buttons.add(TextField((850, 100, 400, 295), font=pygame.font.Font("D:/Source_Code_Pro/static/SourceCodePro-Medium.ttf", 14), color_text=colors))
+buttons.add(TextField((850, 400, 400, 300), font_size=25))
 
 while keep_going:
     events = pygame.event.get()

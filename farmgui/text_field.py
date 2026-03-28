@@ -180,7 +180,10 @@ class TextField(Component):
         h = 0
         for i in range(len(self.text_lines)):
             t = self.text_lines[i]
-            render_colored_text(t, (self.rect.x + self.text_x, self.rect.y + self.text_y + h), screen, font=self.font, base_color=self.font_color, colors=self.colors[i])
+            if len(self.colors) > 0:
+                render_colored_text(t, (self.rect.x + self.text_x, self.rect.y + self.text_y + h), screen, font=self.font, base_color=self.font_color, colors=self.colors[i])
+            else:
+                render_text(t, (self.rect.x + self.text_x, self.rect.y + self.text_y + h), screen, font=self.font, color=self.font_color)
             h += self.h
         if self.input_manager.mouse_connect_object[0] == self and self.timer > 30:
             text_img = self.font.render(self.text_lines[self.cursor_pos[1]][:self.cursor_pos[0]], True, self.font_color)
