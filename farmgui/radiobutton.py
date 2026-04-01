@@ -12,7 +12,7 @@ class RadioButton(Component):
                  text="", font=None, font_name=None, font_size=30, font_color=(0, 0, 0), font_alpha=True, center=(0.5, 0.5), x_offset=5,
                  **kwargs
                  ):
-        Component.__init__(self, rect, kwargs.get("center"))
+        Component.__init__(self, rect, **kwargs)
         self.offset = offset
         self.inactive_image = kwargs.get("inactive_image") if kwargs.get("inactive_image") != None else get_text_box_image(self.rect.w, self.rect.h, (80, 80, 80), ch=20)
         self.hover_image = kwargs.get("hover_image") if kwargs.get("hover_image") != None else get_text_box_image(self.rect.w, self.rect.h, (110, 110, 110), ch=20)

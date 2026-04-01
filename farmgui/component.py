@@ -3,9 +3,9 @@ import pygame
 pygame.init()
 
 class Component():
-    def __init__(self, rect, center=(0, 0)):
+    def __init__(self, rect, **kwargs):
         self.rect = pygame.Rect(rect)
-        self.center = center
+        self.center = kwargs.get("center")
         if self.center == None: self.center = (0, 0)
         self.input_manager = input_manager
         self.image = pygame.Surface((self.rect.w, self.rect.h), pygame.SRCALPHA)

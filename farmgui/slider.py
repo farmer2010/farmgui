@@ -4,7 +4,8 @@ import pygame
 pygame.init()
 
 class Slider(Component):
-    def __init__(self,
+    def __init__(
+            self,
             rect,
             c_rect,
             preset_value=0, min_value=0, max_value=100, period=0,
@@ -13,7 +14,7 @@ class Slider(Component):
             vertical=False,
             **kwargs
         ):
-        Component.__init__(self, rect, kwargs.get("center"))
+        Component.__init__(self, rect, **kwargs)
         self.c_rect = c_rect
         self.value = preset_value
         self.min_value = min_value

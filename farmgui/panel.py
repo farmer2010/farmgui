@@ -4,7 +4,7 @@ pygame.init()
 
 class Panel(Component):
     def __init__(self, rect, background_color=(50, 50, 50), is_main=0, **kwargs):
-        Component.__init__(self, rect, kwargs.get("center"))
+        Component.__init__(self, rect, **kwargs)
         self.background_image = kwargs.get("background_image")
         if kwargs.get("background_image") == None:
             self.background_image = pygame.Surface((self.rect.w, self.rect.h), pygame.SRCALPHA)
@@ -29,7 +29,6 @@ class Panel(Component):
                         m_c = b.collide()
                         press_button = m_c
                         if m_c:
-                            print(self, b)
                             break
                     if not press_button:
                         self.input_manager.mousetag_object[0] = self

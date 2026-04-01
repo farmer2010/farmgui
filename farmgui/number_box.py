@@ -61,8 +61,8 @@ def text_to_number(self):
     self.buttons[0].set_text(t)
 
 class NumberBox(Panel):
-    def __init__(self, rect, preset_value=0, min_value=0, max_value=100, change_value=1, period=1):
-        Panel.__init__(self, rect)
+    def __init__(self, rect, preset_value=0, min_value=0, max_value=100, change_value=1, period=1, **kwargs):
+        Panel.__init__(self, rect, **kwargs)
         self.preset_value = preset_value
         self.min_value = min_value
         self.max_value = max_value

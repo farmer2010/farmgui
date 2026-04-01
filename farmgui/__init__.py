@@ -6,6 +6,7 @@ from farmgui.radiobutton import *
 from farmgui.radiobutton_group import *
 from farmgui.panel import *
 from farmgui.text_field import *
+from farmgui.text_field_main import *
 from farmgui.number_box import *
 #
 from farmgui.input_manager import *
